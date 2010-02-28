@@ -1,0 +1,6 @@
+KiokuDB-Backend-MongoDB*
+.build
+.*.swp
+*.bak
+*~
+_test
