@@ -213,6 +213,12 @@ An L<MongoDB::Collection> instance.
 
 =back
 
+=head1 NOTICE
+
+MongoDB uses perls internal flags on values to determine if the value should be stored
+as an integer, real or a string. This can result in what is thought to be a number being
+stored as a string. This has an impact when later doing searches on that field.
+
 =head1 SEE ALSO
 
 L<KiokuDB>, L<MongoDB>
