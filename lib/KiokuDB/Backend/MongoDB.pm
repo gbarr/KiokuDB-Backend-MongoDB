@@ -20,11 +20,9 @@ with qw(
   KiokuDB::Backend::Role::Concurrency::POSIX
 );
 
-has '+id_field'      => (default => '_id');
-has '+root_field'    => (default => '_root_');
-has '+deleted_field' => (default => '_deleted_');
-has '+tied_field'    => (default => '_tied_');
-has '+inline_data'   => (default => 1);
+has '+id_field'         => (default => '_id');
+has '+class_field'      => (default => "class");
+has '+class_meta_field' => (default => "class_meta");
 
 has host => (
   isa     => 'Str',
@@ -147,6 +145,18 @@ sub commit_entries {
   }
 
   $storage->remove({_id => {'$in' => \@delete}}) if @delete;
+}
+
+sub BUILDARGS {
+    my $self = shift;
+    my $args = $self->SUPER::BUILDARGS(@_);
+    $args->{storage}  = delete $args->{collection}    if ref $args->{collection};
+    $args->{host}     = delete $args->{database_host} if exists $args->{database_host};
+    $args->{port}     = delete $args->{database_port} if exists $args->{database_port};
+    $args->{database} = delete $args->{database_name} if exists $args->{database_name};
+    $args->{collection} = delete $args->{database_collection}
+      if exists $args->{database_collection};
+    $args;
 }
 
 1;
